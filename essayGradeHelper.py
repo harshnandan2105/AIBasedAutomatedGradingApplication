@@ -8,10 +8,17 @@ import nltk
 import re
 from nltk.corpus import stopwords
 import nltk
+from nltk.corpus import stopwords
 
-# Ensure stopwords are available
-nltk.download('stopwords')
-nltk.download('punkt')
+# Robust download (only if not already available)
+def ensure_nltk_resources():
+    try:
+        _ = stopwords.words("english")
+    except LookupError:
+        nltk.download("stopwords")
+        nltk.download("punkt")
+
+ensure_nltk_resources()
 
 
 def essay_to_wordlist(essay_v, remove_stopwords):
