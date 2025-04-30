@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 from gensim.models import KeyedVectors
-from sentence_transformers import SentenceTransformer
 from scipy.spatial import distance
 import streamlit as st
 import google.generativeai as genai
@@ -668,6 +667,7 @@ with tab2:
 
             # Handler for the compare button
             def handle_compare():
+                from sentence_transformers import SentenceTransformer
                 if student_answer:
                     with st.spinner("Analyzing similarity..."):
                         model = SentenceTransformer('bert-base-nli-mean-tokens')
