@@ -509,11 +509,25 @@ with tab1:
                 
                 with col1b:
                     with st.spinner("🔍 Extracting text with OCR..."):
-                        response = ocr.generate_content(["Extract full text from this image", img])
-                        essay_content = response.text
-                        st.text_area("Extracted Text", value=essay_content, height=150)
-                        word_count = len(essay_content.split()) if essay_content else 0
-                        st.caption(f"Word count: {word_count}")
+                         from google.api_core.exceptions import ResourceExhausted
+                         import time
+
+                         # Resize the image to prevent oversized input
+                         img = img.resize((1024, 1024))
+
+                         # Add a short delay to avoid triggering rate limits
+                         time.sleep(2)
+
+                         # Graceful error handling for Gemini quota exhaustion
+                         try:
+                             response = ocr.generate_content(["Extract full text from this image", img])
+                         except ResourceExhausted:
+                             st.error("🚫 Google Generative AI quota exhausted. Please try again later.")
+                             st.stop()
+                         essay_content = response.text
+                         st.text_area("Extracted Text", value=essay_content, height=150)
+                         word_count = len(essay_content.split()) if essay_content else 0
+                         st.caption(f"Word count: {word_count}")
                 
                 grade_button = st.button("🚀 Grade Essay", use_container_width=True)
             else:
@@ -661,7 +675,22 @@ with tab2:
                     img = Image.open(uploaded_file)
                     st.image(img, caption="Uploaded Answer", width=300)
                     with st.spinner("🔍 Extracting text..."):
-                        response = ocr.generate_content(["Extract text", img])
+                        from google.api_core.exceptions import ResourceExhausted
+                        import time
+
+                        # Resize the image to prevent oversized input
+                        img = img.resize((1024, 1024))
+
+                        # Add a short delay to avoid triggering rate limits
+                        time.sleep(2)
+
+                        # Graceful error handling for Gemini quota exhaustion
+                        try:
+                            response = ocr.generate_content(["Extract full text from this image", img])
+                        except ResourceExhausted:
+                            st.error("🚫 Google Generative AI quota exhausted. Please try again later.")
+                            st.stop()
+
                         student_answer = response.text
                         st.text_area("Extracted Text", value=student_answer, height=100)
 
