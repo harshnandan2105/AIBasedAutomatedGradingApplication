@@ -7,6 +7,12 @@ import numpy as np
 import nltk
 import re
 from nltk.corpus import stopwords
+import nltk
+
+# Ensure stopwords are available
+nltk.download('stopwords')
+nltk.download('punkt')
+
 
 def essay_to_wordlist(essay_v, remove_stopwords):
     essay_v = re.sub("[^a-zA-Z]", " ", essay_v)
