@@ -1,5 +1,5 @@
 streamlit==1.32.0
-torch==2.0.1+cpu
+torch==2.2.2
 --extra-index-url https://download.pytorch.org/whl/cpu
 transformers==4.35.2
 sentence-transformers==2.2.2
